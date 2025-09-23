@@ -1,0 +1,14 @@
+{
+  "positions": {},
+  "benchmarks": {},
+  "cash": 0,
+  "portfolio_value": 100000,
+  "total_invested": 100000,
+  "total_return": 0,
+  "total_return_pct": 0.0,
+  "positions_count": 0,
+  "max_loss": 8000,
+  "last_update": "2025-09-23T00:00:00",
+  "last_sync_check": "2025-09-23T00:00:00",
+  "experiment_start": "2025-09-23T00:00:00"
+}
