@@ -1,0 +1,52 @@
+{
+  "portfolio": {
+    "baseline_investment": 100000,
+    "max_portfolio_loss_pct": 0.08,
+    "trailing_stop_trigger": 0.05,
+    "trailing_stop_distance": 0.08,
+    "experiment_start_date": "2025-09-23"
+  },
+  "stocks": {
+    "SNDX": {
+      "allocation": 25000,
+      "entry_target": 42.50,
+      "stop_loss": 39.10,
+      "sector": "Healthcare",
+      "catalyst": "Q3 earnings Oct 30, HIV treatment pipeline updates",
+      "technical_setup": "Support at $40.50, resistance at $45.20",
+      "rationale": "HIV treatment specialist with strong Q3 setup and pipeline catalysts"
+    },
+    "EPAM": {
+      "allocation": 25000,
+      "entry_target": 195.00,
+      "stop_loss": 179.40,
+      "sector": "Technology",
+      "catalyst": "Q3 earnings Oct 31, digital transformation demand recovery",
+      "technical_setup": "Breakout above $190, support at $185",
+      "rationale": "Digital services leader rebounding from 2023 lows with strong technical setup"
+    },
+    "STRL": {
+      "allocation": 25000,
+      "entry_target": 320.00,
+      "stop_loss": 294.40,
+      "sector": "Healthcare",
+      "catalyst": "FDA decision on liver cancer drug expected Oct 2025",
+      "technical_setup": "Consolidating above $310 support, resistance at $340",
+      "rationale": "Biotech with near-term FDA catalyst and strong institutional backing"
+    },
+    "IDCC": {
+      "allocation": 25000,
+      "entry_target": 135.00,
+      "stop_loss": 124.20,
+      "sector": "Technology",
+      "catalyst": "5G patent licensing renewals Q4, AI chip IP monetization",
+      "technical_setup": "Testing resistance at $138, strong support at $130",
+      "rationale": "Patent licensing specialist positioned for 5G and AI tailwinds"
+    }
+  },
+  "benchmarks": {
+    "MDY": "SPDR S&P MidCap 400 ETF",
+    "IJH": "iShares Core S&P Mid-Cap ETF",
+    "VO": "Vanguard Mid-Cap Index Fund"
+  }
+}
