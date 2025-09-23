@@ -1,4 +1,4 @@
- import json
+import json
 import os
 from datetime import datetime
 from alpaca_trade_api import REST, TimeFrame
