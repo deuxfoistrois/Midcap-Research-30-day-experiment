@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timedelta
 import pandas as pd
 from alpaca_trade_api import REST, TimeFrame
+import time
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -22,47 +23,89 @@ class PortfolioManager:
             return json.load(f)
     
     def get_current_prices(self):
-        """Get current market prices for all stocks"""
+        """Get current market prices for all stocks with retry logic"""
         symbols = list(self.config['stocks'].keys())
-        try:
-            quotes = self.api.get_latest_quotes(symbols)
-            prices = {}
-            for symbol in symbols:
-                if symbol in quotes and quotes[symbol].ask_price > 0:
-                    prices[symbol] = float(quotes[symbol].ask_price)
-                else:
-                    print(f"ERROR: No valid price for {symbol}")
-                    return {}
-            return prices
-        except Exception as e:
-            print(f"ERROR fetching prices: {e}")
+        prices = {}
+        
+        for symbol in symbols:
+            for attempt in range(3):
+                try:
+                    print(f"Fetching price for {symbol} (attempt {attempt + 1})")
+                    
+                    # Try quotes first
+                    quote = self.api.get_latest_quote(symbol)
+                    if quote and hasattr(quote, 'ask_price') and quote.ask_price and quote.ask_price > 0:
+                        prices[symbol] = float(quote.ask_price)
+                        print(f"{symbol}: ${quote.ask_price} from quotes")
+                        break
+                    
+                    # Try bars if quotes fail
+                    bar = self.api.get_latest_bar(symbol)
+                    if bar and hasattr(bar, 'close') and bar.close and bar.close > 0:
+                        prices[symbol] = float(bar.close)
+                        print(f"{symbol}: ${bar.close} from bars")
+                        break
+                    
+                    print(f"No valid price data for {symbol} on attempt {attempt + 1}")
+                    time.sleep(1)  # Wait before retry
+                    
+                except Exception as e:
+                    print(f"Error fetching {symbol} on attempt {attempt + 1}: {e}")
+                    if attempt < 2:
+                        time.sleep(2)
+                    else:
+                        print(f"FAILED: Could not get price for {symbol} after 3 attempts")
+                        return {}
+        
+        if len(prices) != len(symbols):
+            missing = set(symbols) - set(prices.keys())
+            print(f"FAILED: Missing prices for {missing}")
             return {}
+            
+        return prices
     
     def get_benchmark_prices(self):
-        """Get benchmark ETF prices"""
+        """Get benchmark ETF prices with retry logic"""
         benchmarks = list(self.config['benchmarks'].keys())
-        try:
-            quotes = self.api.get_latest_quotes(benchmarks)
-            prices = {}
-            for symbol in benchmarks:
-                if symbol in quotes and quotes[symbol].ask_price > 0:
-                    prices[symbol] = float(quotes[symbol].ask_price)
-                else:
-                    print(f"ERROR: No valid benchmark price for {symbol}")
-                    return {}
-            return prices
-        except Exception as e:
-            print(f"ERROR fetching benchmark prices: {e}")
-            return {}
+        prices = {}
+        
+        for symbol in benchmarks:
+            for attempt in range(3):
+                try:
+                    quote = self.api.get_latest_quote(symbol)
+                    if quote and hasattr(quote, 'ask_price') and quote.ask_price and quote.ask_price > 0:
+                        prices[symbol] = float(quote.ask_price)
+                        break
+                    
+                    bar = self.api.get_latest_bar(symbol)
+                    if bar and hasattr(bar, 'close') and bar.close and bar.close > 0:
+                        prices[symbol] = float(bar.close)
+                        break
+                        
+                    time.sleep(1)
+                    
+                except Exception as e:
+                    print(f"Error fetching benchmark {symbol}: {e}")
+                    if attempt < 2:
+                        time.sleep(2)
+                    else:
+                        print(f"FAILED: Could not get benchmark price for {symbol}")
+                        return {}
+        
+        return prices
     
     def calculate_positions(self, prices):
         """Calculate position data based on current prices"""
         positions = {}
         total_positions_value = 0
         
+        print("Calculating positions with prices:")
+        for symbol, price in prices.items():
+            print(f"  {symbol}: ${price}")
+        
         for symbol, stock_config in self.config['stocks'].items():
             if symbol not in prices:
-                print(f"ERROR: Missing price for {symbol} - aborting position calculations")
+                print(f"ERROR: Missing price for {symbol}")
                 return {}, 0
                 
             current_price = prices[symbol]
@@ -169,6 +212,14 @@ class PortfolioManager:
         print("=== Daily Portfolio Update ===")
         print(f"Timestamp: {datetime.now().isoformat()}")
         
+        # Test API connection first
+        try:
+            account = self.api.get_account()
+            print(f"Connected to Alpaca - Account equity: ${float(account.equity):,.2f}")
+        except Exception as e:
+            print(f"FAILED: Cannot connect to Alpaca API: {e}")
+            return False
+        
         prices = self.get_current_prices()
         if not prices:
             print("ABORTING: Could not fetch valid prices for all stocks")
@@ -176,8 +227,8 @@ class PortfolioManager:
         
         benchmark_prices = self.get_benchmark_prices()
         if not benchmark_prices:
-            print("ABORTING: Could not fetch valid benchmark prices")
-            return False
+            print("WARNING: Could not fetch benchmark prices, using empty dict")
+            benchmark_prices = {}
         
         positions, positions_value = self.calculate_positions(prices)
         if not positions:
