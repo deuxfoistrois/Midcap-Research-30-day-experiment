@@ -24,6 +24,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install alpaca-trade-api pandas numpy requests
         
+    - name: Place Initial Orders (if needed)
+      env:
+        ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+        ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        ALPACA_BASE_URL: ${{ secrets.ALPACA_BASE_URL }}
+      run: |
+        echo "=== Step 0: Check and Place Initial Orders ==="
+        python place_initial_orders.py
+        
     - name: Run Alpaca Sync (Check Stop Losses)
       env:
         ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
