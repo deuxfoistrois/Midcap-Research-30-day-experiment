@@ -28,15 +28,14 @@ class PortfolioManager:
             quotes = self.api.get_latest_quotes(symbols)
             prices = {}
             for symbol in symbols:
-                if symbol in quotes:
+                if symbol in quotes and quotes[symbol].ask_price > 0:
                     prices[symbol] = float(quotes[symbol].ask_price)
                 else:
-                    # Fallback to bars if quote fails
-                    bars = self.api.get_latest_bar(symbol)
-                    prices[symbol] = float(bars.close)
+                    print(f"ERROR: No valid price for {symbol}")
+                    return {}
             return prices
         except Exception as e:
-            print(f"Error fetching prices: {e}")
+            print(f"ERROR fetching prices: {e}")
             return {}
     
     def get_benchmark_prices(self):
@@ -46,14 +45,14 @@ class PortfolioManager:
             quotes = self.api.get_latest_quotes(benchmarks)
             prices = {}
             for symbol in benchmarks:
-                if symbol in quotes:
+                if symbol in quotes and quotes[symbol].ask_price > 0:
                     prices[symbol] = float(quotes[symbol].ask_price)
                 else:
-                    bars = self.api.get_latest_bar(symbol)
-                    prices[symbol] = float(bars.close)
+                    print(f"ERROR: No valid benchmark price for {symbol}")
+                    return {}
             return prices
         except Exception as e:
-            print(f"Error fetching benchmark prices: {e}")
+            print(f"ERROR fetching benchmark prices: {e}")
             return {}
     
     def calculate_positions(self, prices):
@@ -62,32 +61,35 @@ class PortfolioManager:
         total_positions_value = 0
         
         for symbol, stock_config in self.config['stocks'].items():
-            if symbol in prices:
-                current_price = prices[symbol]
-                entry_price = stock_config['entry_target']
-                allocation = stock_config['allocation']
-                shares = allocation / entry_price
+            if symbol not in prices:
+                print(f"ERROR: Missing price for {symbol} - aborting position calculations")
+                return {}, 0
                 
-                current_value = shares * current_price
-                cost_basis = allocation
-                pnl = current_value - cost_basis
-                pnl_pct = pnl / cost_basis if cost_basis > 0 else 0
-                
-                positions[symbol] = {
-                    'symbol': symbol,
-                    'shares': round(shares, 2),
-                    'entry_price': entry_price,
-                    'current_price': current_price,
-                    'market_value': round(current_value, 2),
-                    'cost_basis': cost_basis,
-                    'unrealized_pnl': round(pnl, 2),
-                    'unrealized_pnl_pct': round(pnl_pct, 4),
-                    'sector': stock_config['sector'],
-                    'stop_loss': stock_config['stop_loss'],
-                    'catalyst': stock_config['catalyst'],
-                    'technical_setup': stock_config['technical_setup']
-                }
-                total_positions_value += current_value
+            current_price = prices[symbol]
+            entry_price = stock_config['entry_target']
+            allocation = stock_config['allocation']
+            shares = allocation / entry_price
+            
+            current_value = shares * current_price
+            cost_basis = allocation
+            pnl = current_value - cost_basis
+            pnl_pct = pnl / cost_basis if cost_basis > 0 else 0
+            
+            positions[symbol] = {
+                'symbol': symbol,
+                'shares': round(shares, 2),
+                'entry_price': entry_price,
+                'current_price': current_price,
+                'market_value': round(current_value, 2),
+                'cost_basis': cost_basis,
+                'unrealized_pnl': round(pnl, 2),
+                'unrealized_pnl_pct': round(pnl_pct, 4),
+                'sector': stock_config['sector'],
+                'stop_loss': stock_config['stop_loss'],
+                'catalyst': stock_config['catalyst'],
+                'technical_setup': stock_config['technical_setup']
+            }
+            total_positions_value += current_value
         
         return positions, total_positions_value
     
@@ -129,7 +131,6 @@ class PortfolioManager:
         """Update portfolio history CSV"""
         today = datetime.now().strftime('%Y-%m-%d')
         
-        # Prepare row data
         row_data = {
             'date': today,
             'portfolio_value': portfolio_metrics['portfolio_value'],
@@ -141,23 +142,19 @@ class PortfolioManager:
             'positions_count': portfolio_metrics['positions_count']
         }
         
-        # Add benchmark data
         for symbol, price in benchmark_prices.items():
             row_data[f'{symbol}_price'] = price
         
-        # Add individual stock data
         for symbol, position in positions.items():
             row_data[f'{symbol}_price'] = position['current_price']
             row_data[f'{symbol}_pnl'] = position['unrealized_pnl']
             row_data[f'{symbol}_pnl_pct'] = position['unrealized_pnl_pct']
         
-        # Create or update CSV
         os.makedirs('data', exist_ok=True)
         csv_file = 'data/portfolio_history.csv'
         
         if os.path.exists(csv_file):
             df = pd.read_csv(csv_file)
-            # Update today's row if exists, otherwise append
             if today in df['date'].values:
                 df.loc[df['date'] == today, list(row_data.keys())] = list(row_data.values())
             else:
@@ -172,39 +169,37 @@ class PortfolioManager:
         print("=== Daily Portfolio Update ===")
         print(f"Timestamp: {datetime.now().isoformat()}")
         
-        try:
-            # Get current market data
-            prices = self.get_current_prices()
-            benchmark_prices = self.get_benchmark_prices()
-            
-            if not prices:
-                print("ERROR: Could not fetch stock prices")
-                return False
-            
-            # Calculate positions and portfolio metrics
-            positions, positions_value = self.calculate_positions(prices)
-            portfolio_metrics = self.calculate_portfolio_metrics(positions_value)
-            
-            # Save data
-            self.save_latest_data(positions, portfolio_metrics, benchmark_prices)
-            self.update_portfolio_history(positions, portfolio_metrics, benchmark_prices)
-            
-            # Print summary
-            print(f"Portfolio Value: ${portfolio_metrics['portfolio_value']:,.2f}")
-            print(f"Total Return: ${portfolio_metrics['total_return']:,.2f} ({portfolio_metrics['total_return_pct']:.2%})")
-            print(f"Active Positions: {portfolio_metrics['positions_count']}")
-            print(f"Cash: ${portfolio_metrics['cash']:,.2f}")
-            
-            for symbol, position in positions.items():
-                pnl_str = f"${position['unrealized_pnl']:,.2f} ({position['unrealized_pnl_pct']:.2%})"
-                print(f"{symbol}: ${position['current_price']:,.2f} | P&L: {pnl_str}")
-            
-            print("Daily update completed successfully")
-            return True
-            
-        except Exception as e:
-            print(f"ERROR in daily update: {e}")
+        prices = self.get_current_prices()
+        if not prices:
+            print("ABORTING: Could not fetch valid prices for all stocks")
             return False
+        
+        benchmark_prices = self.get_benchmark_prices()
+        if not benchmark_prices:
+            print("ABORTING: Could not fetch valid benchmark prices")
+            return False
+        
+        positions, positions_value = self.calculate_positions(prices)
+        if not positions:
+            print("ABORTING: Could not calculate positions")
+            return False
+        
+        portfolio_metrics = self.calculate_portfolio_metrics(positions_value)
+        
+        self.save_latest_data(positions, portfolio_metrics, benchmark_prices)
+        self.update_portfolio_history(positions, portfolio_metrics, benchmark_prices)
+        
+        print(f"Portfolio Value: ${portfolio_metrics['portfolio_value']:,.2f}")
+        print(f"Total Return: ${portfolio_metrics['total_return']:,.2f} ({portfolio_metrics['total_return_pct']:.2%})")
+        print(f"Active Positions: {portfolio_metrics['positions_count']}")
+        print(f"Cash: ${portfolio_metrics['cash']:,.2f}")
+        
+        for symbol, position in positions.items():
+            pnl_str = f"${position['unrealized_pnl']:,.2f} ({position['unrealized_pnl_pct']:.2%})"
+            print(f"{symbol}: ${position['current_price']:,.2f} | P&L: {pnl_str}")
+        
+        print("Daily update completed successfully")
+        return True
 
 if __name__ == "__main__":
     manager = PortfolioManager()
