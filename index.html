@@ -314,7 +314,7 @@
         
         async function loadPortfolioData() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/midcap-experiment/refs/heads/main/docs/latest.json');
+                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/Midcap-Research-30-day-experiment/refs/heads/main/docs/latest.json');
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -329,7 +329,7 @@
         
         async function loadHistoryData() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/midcap-experiment/refs/heads/main/data/portfolio_history.csv');
+                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/Midcap-Research-30-day-experiment/refs/heads/main/data/portfolio_history.csv');
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
