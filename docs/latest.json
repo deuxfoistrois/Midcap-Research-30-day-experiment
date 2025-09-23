@@ -1,14 +1,74 @@
 {
-  "positions": {},
-  "benchmarks": {},
+  "positions": {
+    "SNDX": {
+      "symbol": "SNDX",
+      "shares": 588.24,
+      "entry_price": 42.5,
+      "current_price": 15.0,
+      "market_value": 8823.53,
+      "cost_basis": 25000,
+      "unrealized_pnl": -16176.47,
+      "unrealized_pnl_pct": -0.6471,
+      "sector": "Healthcare",
+      "stop_loss": 39.1,
+      "catalyst": "Q3 earnings Oct 30, HIV treatment pipeline updates",
+      "technical_setup": "Support at $40.50, resistance at $45.20"
+    },
+    "EPAM": {
+      "symbol": "EPAM",
+      "shares": 128.21,
+      "entry_price": 195.0,
+      "current_price": 0.0,
+      "market_value": 0.0,
+      "cost_basis": 25000,
+      "unrealized_pnl": -25000.0,
+      "unrealized_pnl_pct": -1.0,
+      "sector": "Technology",
+      "stop_loss": 179.4,
+      "catalyst": "Q3 earnings Oct 31, digital transformation demand recovery",
+      "technical_setup": "Breakout above $190, support at $185"
+    },
+    "STRL": {
+      "symbol": "STRL",
+      "shares": 78.12,
+      "entry_price": 320.0,
+      "current_price": 370.0,
+      "market_value": 28906.25,
+      "cost_basis": 25000,
+      "unrealized_pnl": 3906.25,
+      "unrealized_pnl_pct": 0.1562,
+      "sector": "Healthcare",
+      "stop_loss": 294.4,
+      "catalyst": "FDA decision on liver cancer drug expected Oct 2025",
+      "technical_setup": "Consolidating above $310 support, resistance at $340"
+    },
+    "IDCC": {
+      "symbol": "IDCC",
+      "shares": 185.19,
+      "entry_price": 135.0,
+      "current_price": 0.0,
+      "market_value": 0.0,
+      "cost_basis": 25000,
+      "unrealized_pnl": -25000.0,
+      "unrealized_pnl_pct": -1.0,
+      "sector": "Technology",
+      "stop_loss": 124.2,
+      "catalyst": "5G patent licensing renewals Q4, AI chip IP monetization",
+      "technical_setup": "Testing resistance at $138, strong support at $130"
+    }
+  },
+  "benchmarks": {
+    "MDY": 603.77,
+    "IJH": 65.89,
+    "VO": 293.03
+  },
+  "last_update": "2025-09-23T16:26:59.546743",
+  "experiment_start": "2025-09-23",
   "cash": 0,
-  "portfolio_value": 100000,
+  "portfolio_value": 37729.78,
   "total_invested": 100000,
-  "total_return": 0,
-  "total_return_pct": 0.0,
-  "positions_count": 0,
-  "max_loss": 8000,
-  "last_update": "2025-09-23T00:00:00",
-  "last_sync_check": "2025-09-23T00:00:00",
-  "experiment_start": "2025-09-23T00:00:00"
+  "total_return": -62270.22,
+  "total_return_pct": -0.6227,
+  "positions_count": 4,
+  "max_loss": 8000.0
 }
