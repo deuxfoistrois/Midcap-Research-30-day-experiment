@@ -17,12 +17,12 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.11'
         
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install alpaca-trade-api pandas numpy requests warnings
+        pip install alpaca-trade-api pandas numpy requests
         
     - name: Run Alpaca Sync (Check Stop Losses)
       env:
