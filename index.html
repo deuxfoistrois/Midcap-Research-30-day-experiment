@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mid-Cap Portfolio Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffffff, #a8c5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-change {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .positive { color: #4ade80; }
+        .negative { color: #f87171; }
+        .neutral { color: #94a3b8; }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .positions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .position-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .position-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .position-symbol {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .position-sector {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .position-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            opacity: 0.8;
+        }
+
+        .catalyst-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .catalyst-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .risk-alerts {
+            background: rgba(255, 87, 87, 0.2);
+            border: 1px solid rgba(255, 87, 87, 0.4);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .risk-alerts.show {
+            display: block;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fca5a5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .error {
+            background: rgba(255, 87, 87, 0.2);
+            border: 1px solid rgba(255, 87, 87, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            color: #fca5a5;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .position-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mid-Cap Portfolio Dashboard</h1>
+            <p>30-Day Catalyst-Driven Investment Strategy</p>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading portfolio data...
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <h3>Error Loading Data</h3>
+            <p id="error-message">Unable to load portfolio information</p>
+        </div>
+
+        <div id="risk-alerts" class="risk-alerts">
+            <div class="alert-title">Risk Alerts</div>
+            <div id="risk-content"></div>
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Portfolio Value</div>
+                    <div class="metric-value" id="portfolio-value">$0</div>
+                    <div class="metric-change" id="portfolio-change">Loading...</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Return</div>
+                    <div class="metric-value" id="total-return">$0</div>
+                    <div class="metric-change" id="return-percentage">0%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Cash Available</div>
+                    <div class="metric-value" id="cash-value">$0</div>
+                    <div class="metric-change neutral">Available for deployment</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Positions</div>
+                    <div class="metric-value" id="positions-count">0</div>
+                    <div class="metric-change neutral" id="days-active">0 days active</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Portfolio Performance vs Benchmarks</div>
+                    <canvas id="performance-chart" width="800" height="400"></canvas>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Portfolio Allocation</div>
+                    <canvas id="allocation-chart" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Individual Stock Performance</div>
+                <canvas id="individual-chart" width="800" height="300"></canvas>
+            </div>
+
+            <div class="positions-grid" id="positions-container">
+                <!-- Position cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Last updated: <span id="last-update">Loading...</span></p>
+            <p>Data source: Alpaca Markets Paper Trading | Mid-Cap Focus Strategy</p>
+        </div>
+    </div>
+
+    <script>
+        let portfolioChart, allocationChart, individualChart;
+        
+        async function loadPortfolioData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/midcap-experiment/refs/heads/main/docs/latest.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error loading portfolio data:', error);
+                throw error;
+            }
+        }
+        
+        async function loadHistoryData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/deuxfoistrois/midcap-experiment/refs/heads/main/data/portfolio_history.csv');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const csvText = await response.text();
+                return parseCSV(csvText);
+            } catch (error) {
+                console.error('Error loading history data:', error);
+                return [];
+            }
+        }
+        
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index];
+                });
+                return row;
+            });
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+        
+        function formatPercentage(value) {
+            return `${(value * 100).toFixed(2)}%`;
+        }
+        
+        function getChangeClass(value) {
+            if (value > 0) return 'positive';
+            if (value < 0) return 'negative';
+            return 'neutral';
+        }
+        
+        function calculateDaysActive(startDate) {
+            const start = new Date(startDate);
+            const now = new Date();
+            const diffTime = Math.abs(now - start);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+        
+        function updateMetrics(data) {
+            document.getElementById('portfolio-value').textContent = formatCurrency(data.portfolio_value);
+            document.getElementById('total-return').textContent = formatCurrency(data.total_return);
+            document.getElementById('return-percentage').textContent = formatPercentage(data.total_return_pct);
+            document.getElementById('cash-value').textContent = formatCurrency(data.cash);
+            document.getElementById('positions-count').textContent = data.positions_count;
+            
+            // Calculate days active
+            const daysActive = calculateDaysActive(data.experiment_start);
+            document.getElementById('days-active').textContent = `${daysActive} days active`;
+            
+            // Update change classes
+            document.getElementById('return-percentage').className = `metric-change ${getChangeClass(data.total_return)}`;
+            
+            // Update last update time
+            const lastUpdate = new Date(data.last_update);
+            document.getElementById('last-update').textContent = lastUpdate.toLocaleString();
+        }
+        
+        function checkRiskAlerts(data) {
+            const riskAlerts = document.getElementById('risk-alerts');
+            const riskContent = document.getElementById('risk-content');
+            const alerts = [];
+            
+            const maxLossThreshold = 100000 * 0.08; // 8% of $100k
+            const currentLoss = Math.abs(Math.min(0, data.total_return));
+            
+            if (currentLoss > maxLossThreshold * 0.75) {
+                alerts.push('Portfolio approaching 8% maximum risk threshold');
+            }
+            
+            if (currentLoss > maxLossThreshold) {
+                alerts.push('CRITICAL: Portfolio has exceeded 8% maximum risk threshold');
+            }
+            
+            // Check individual positions for large losses
+            Object.entries(data.positions).forEach(([symbol, position]) => {
+                if (position.unrealized_pnl_pct < -0.15) {
+                    alerts.push(`${symbol} showing significant loss: ${formatPercentage(position.unrealized_pnl_pct)}`);
+                }
+            });
+            
+            if (alerts.length > 0) {
+                riskContent.innerHTML = alerts.map(alert => `<div>• ${alert}</div>`).join('');
+                riskAlerts.classList.add('show');
+            } else {
+                riskAlerts.classList.remove('show');
+            }
+        }
+        
+        function createPerformanceChart(historyData, benchmarkData) {
+            const ctx = document.getElementById('performance-chart').getContext('2d');
+            
+            if (portfolioChart) {
+                portfolioChart.destroy();
+            }
+            
+            const dates = historyData.map(row => row.date).filter(date => {
+                const d = new Date(date);
+                return d.getDay() !== 0 && d.getDay() !== 6; // Exclude weekends
+            });
+            
+            const portfolioReturns = historyData.map(row => parseFloat(row.total_return_pct) * 100)
+                .filter((_, index) => {
+                    const date = historyData[index].date;
+                    const d = new Date(date);
+                    return d.getDay() !== 0 && d.getDay() !== 6;
+                });
+            
+            portfolioChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Portfolio',
+                        data: portfolioReturns,
+                        borderColor: '#4ade80',
+                        backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createAllocationChart(data) {
+            const ctx = document.getElementById('allocation-chart').getContext('2d');
+            
+            if (allocationChart) {
+                allocationChart.destroy();
+            }
+            
+            const positions = Object.entries(data.positions);
+            const symbols = positions.map(([symbol]) => symbol);
+            const values = positions.map(([_, position]) => position.market_value);
+            
+            // Add cash if significant
+            if (data.cash > 1000) {
+                symbols.push('Cash');
+                values.push(data.cash);
+            }
+            
+            const colors = [
+                '#4ade80', '#60a5fa', '#a78bfa', '#fb7185', 
+                '#fbbf24', '#34d399', '#f472b6', '#818cf8'
+            ];
+            
+            allocationChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: symbols,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors.slice(0, symbols.length),
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createIndividualChart(historyData, positions) {
+            const ctx = document.getElementById('individual-chart').getContext('2d');
+            
+            if (individualChart) {
+                individualChart.destroy();
+            }
+            
+            const dates = historyData.map(row => row.date).filter(date => {
+                const d = new Date(date);
+                return d.getDay() !== 0 && d.getDay() !== 6;
+            });
+            
+            const colors = ['#4ade80', '#60a5fa', '#a78bfa', '#fb7185'];
+            const datasets = [];
+            
+            Object.keys(positions).forEach((symbol, index) => {
+                const pnlData = historyData.map(row => {
+                    const pnlPct = parseFloat(row[`${symbol}_pnl_pct`] || 0) * 100;
+                    return isNaN(pnlPct) ? 0 : pnlPct;
+                }).filter((_, idx) => {
+                    const date = historyData[idx].date;
+                    const d = new Date(date);
+                    return d.getDay() !== 0 && d.getDay() !== 6;
+                });
+                
+                datasets.push({
+                    label: symbol,
+                    data: pnlData,
+                    borderColor: colors[index % colors.length],
+                    backgroundColor: 'transparent',
+                    borderWidth: 2
+                });
+            });
+            
+            individualChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createPositionCards(data) {
+            const container = document.getElementById('positions-container');
+            container.innerHTML = '';
+            
+            Object.entries(data.positions).forEach(([symbol, position]) => {
+                const card = document.createElement('div');
+                card.className = 'position-card';
+                
+                const pnlClass = getChangeClass(position.unrealized_pnl);
+                
+                card.innerHTML = `
+                    <div class="position-header">
+                        <div class="position-symbol">${symbol}</div>
+                        <div class="position-sector">${position.sector}</div>
+                    </div>
+                    <div class="position-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Current Price:</span>
+                            <span>${formatCurrency(position.current_price)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Entry Price:</span>
+                            <span>${formatCurrency(position.entry_price)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Shares:</span>
+                            <span>${position.shares}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Market Value:</span>
+                            <span>${formatCurrency(position.market_value)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">P&L:</span>
+                            <span class="${pnlClass}">${formatCurrency(position.unrealized_pnl)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">P&L %:</span>
+                            <span class="${pnlClass}">${formatPercentage(position.unrealized_pnl_pct)}</span>
+                        </div>
+                    </div>
+                    <div class="catalyst-info">
+                        <div class="catalyst-title">Investment Thesis</div>
+                        <div><strong>Catalyst:</strong> ${position.catalyst}</div>
+                        <div><strong>Technical:</strong> ${position.technical_setup}</div>
+                        <div><strong>Stop Loss:</strong> ${formatCurrency(position.stop_loss)}</div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        async function initializeDashboard() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'none';
+                
+                const [portfolioData, historyData] = await Promise.all([
+                    loadPortfolioData(),
+                    loadHistoryData()
+                ]);
+                
+                updateMetrics(portfolioData);
+                checkRiskAlerts(portfolioData);
+                createPerformanceChart(historyData, portfolioData.benchmarks);
+                createAllocationChart(portfolioData);
+                createIndividualChart(historyData, portfolioData.positions);
+                createPositionCards(portfolioData);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error-message').textContent = error.message;
+                console.error('Dashboard initialization error:', error);
+            }
+        }
+        
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+        
+        // Refresh every 5 minutes
+        setInterval(initializeDashboard, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
