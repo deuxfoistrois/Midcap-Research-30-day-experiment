@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2025-09-23T16:44:30.537414",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "a602b320-25c7-4979-a636-4d95a9e8947e"
+      },
+      {
+        "side": "buy",
+        "symbol": "STRL",
+        "qty": 11,
+        "order_id": "f022c4cd-0b7a-4a04-bc58-82c902815a3b"
+      },
+      {
+        "side": "buy",
+        "symbol": "IDCC",
+        "qty": 185,
+        "order_id": "d8bfd039-b491-44db-9733-263480857b19"
+      }
+    ]
+  }
+]

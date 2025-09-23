@@ -2,8 +2,16 @@
   "STRL": {
     "activated_date": "2025-09-23T16:26:59.634366",
     "activation_price": 370.0,
-    "highest_price": 370.0,
-    "current_stop_price": 340.40000000000003,
+    "highest_price": 370.93,
+    "current_stop_price": 341.2556,
+    "active": true,
+    "last_updated": "2025-09-23T16:44:32.429006"
+  },
+  "IDCC": {
+    "activated_date": "2025-09-23T16:44:32.429013",
+    "activation_price": 346.38,
+    "highest_price": 346.38,
+    "current_stop_price": 318.6696,
     "active": true
   }
 }
