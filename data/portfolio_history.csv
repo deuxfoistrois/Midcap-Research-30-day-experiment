@@ -1,2 +1,3 @@
 date,portfolio_value,cash,positions_value,total_invested,total_return,total_return_pct,positions_count,MDY_price,IJH_price,VO_price,SNDX_price,SNDX_pnl,SNDX_pnl_pct,EPAM_price,EPAM_pnl,EPAM_pnl_pct,STRL_price,STRL_pnl,STRL_pnl_pct,IDCC_price,IDCC_pnl,IDCC_pnl_pct
 2025-09-23,122323.56,0,122323.56,100000,22323.56,0.2232,4,600.08,65.57,292.39,14.845,-16267.65,-0.6507,154.01,-5255.13,-0.2102,372.125,4072.27,0.1629,349.78,39774.07,1.591
+2025-09-24,119800.59,0,119800.59,100000,19800.59,0.198,4,595.33,65.17,291.69,15.03,-16158.82,-0.6464,156.4,-4948.72,-0.1979,343.95,1871.09,0.0748,345.8,39037.04,1.5615
