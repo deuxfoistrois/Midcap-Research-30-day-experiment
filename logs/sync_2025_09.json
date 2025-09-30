@@ -82,5 +82,29 @@
         "order_id": "64b9798f-52ab-4a01-be1e-bc096ea2446c"
       }
     ]
+  },
+  {
+    "timestamp": "2025-09-30T21:38:08.344969",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "SNDX",
+        "qty": 1016,
+        "order_id": "76433aff-79f7-40df-a59b-d2703475a35d"
+      },
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "3bd15e48-3e80-472e-b87d-212c9bb90cca"
+      },
+      {
+        "side": "sell",
+        "symbol": "STRL",
+        "qty": 144,
+        "order_id": "b8e4ea7d-dcfd-418d-a11b-6ca8cc8f82d4"
+      }
+    ]
   }
 ]
