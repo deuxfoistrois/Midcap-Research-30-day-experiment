@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2025-10-02T21:37:29.852557",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "SNDX",
+        "qty": 588,
+        "order_id": "73ef1991-e40e-4a14-99c1-740726f223e8"
+      },
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "a2a74a4a-ada3-47aa-8a3a-c72c6961a8f2"
+      }
+    ]
+  }
+]
