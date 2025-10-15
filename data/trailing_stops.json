@@ -10,9 +10,9 @@
   "IDCC": {
     "activated_date": "2025-09-23T16:44:32.429013",
     "activation_price": 346.38,
-    "highest_price": 358.205,
-    "current_stop_price": 329.5486,
+    "highest_price": 364.305,
+    "current_stop_price": 335.16060000000004,
     "active": true,
-    "last_updated": "2025-10-14T21:38:11.401386"
+    "last_updated": "2025-10-15T21:37:59.779757"
   }
 }
