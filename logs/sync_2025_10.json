@@ -130,5 +130,23 @@
         "order_id": "7aa7ff05-6149-4986-85c6-98bbb555836e"
       }
     ]
+  },
+  {
+    "timestamp": "2025-10-21T21:37:14.389563",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "a3cc5c0b-0f8b-4d6f-a3bf-8ec73f874600"
+      },
+      {
+        "side": "sell",
+        "symbol": "IDCC",
+        "qty": 67,
+        "order_id": "25bd6f7b-e0f4-4f55-8a0a-918b9dc3435f"
+      }
+    ]
   }
 ]
