@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2025-10-22T21:38:02.148430",
+    "order_type": "trailing_stop_update",
+    "orders": [
+      {
+        "symbol": "IDCC",
+        "order_id": "ac2a76f0-1422-413f-9434-3e9e6a881e55",
+        "shares": 185,
+        "stop_price": 342.01,
+        "stop_type": "trailing",
+        "timestamp": "2025-10-22T21:38:02.148412"
+      }
+    ],
+    "total_orders": 1
+  }
+]
