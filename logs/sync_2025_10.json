@@ -208,5 +208,17 @@
         "order_id": "631bbb15-dabc-4c5a-ab0e-2035a3a920c4"
       }
     ]
+  },
+  {
+    "timestamp": "2025-10-29T21:39:35.772441",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "e8503a2f-4e36-4a7e-bac8-d10f5d9187d0"
+      }
+    ]
   }
 ]
