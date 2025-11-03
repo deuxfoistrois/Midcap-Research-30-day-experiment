@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2025-11-03T21:39:16.217809",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "SNDX",
+        "qty": 1822,
+        "order_id": "b0c658d3-c709-4c24-a2a2-53b3cbd7cac2"
+      }
+    ]
+  }
+]
