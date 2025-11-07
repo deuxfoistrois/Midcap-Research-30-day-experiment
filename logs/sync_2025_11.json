@@ -52,5 +52,23 @@
         "order_id": "9c8d80b3-86f6-4956-81c9-839e803e1f25"
       }
     ]
+  },
+  {
+    "timestamp": "2025-11-07T21:38:13.948934",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "SNDX",
+        "qty": 588,
+        "order_id": "af23f046-4d83-444f-b12f-1da4141b1ea8"
+      },
+      {
+        "side": "sell",
+        "symbol": "EPAM",
+        "qty": 149,
+        "order_id": "6ddcb32f-1830-48f1-9278-3dd605ab57a3"
+      }
+    ]
   }
 ]
