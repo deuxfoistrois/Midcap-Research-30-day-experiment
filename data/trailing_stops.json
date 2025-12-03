@@ -14,5 +14,12 @@
     "current_stop_price": 365.6172,
     "active": true,
     "last_updated": "2025-10-30T21:39:12.921183"
+  },
+  "EPAM": {
+    "activated_date": "2025-12-03T21:38:54.220331",
+    "activation_price": 206.0,
+    "highest_price": 206.0,
+    "current_stop_price": 189.52,
+    "active": true
   }
 }
