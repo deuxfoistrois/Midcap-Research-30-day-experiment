@@ -20,6 +20,6 @@
     "activation_price": 206.0,
     "highest_price": 206.0,
     "current_stop_price": 189.52,
-    "active": true
+    "active": false
   }
 }
