@@ -94,5 +94,17 @@
         "order_id": "dd947d02-ee36-42d3-a09d-b8bac002d322"
       }
     ]
+  },
+  {
+    "timestamp": "2025-12-23T21:40:59.854101",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "STRL",
+        "qty": 78,
+        "order_id": "c008ba66-237c-49bc-b52d-36a915191568"
+      }
+    ]
   }
 ]
