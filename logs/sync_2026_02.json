@@ -46,5 +46,17 @@
         "order_id": "7162c189-1c4c-4c59-8a7d-00f7e883711f"
       }
     ]
+  },
+  {
+    "timestamp": "2026-02-13T21:59:22.781544",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "EPAM",
+        "qty": 25,
+        "order_id": "72bb225b-f8a4-4a70-97de-5408a0edd9dc"
+      }
+    ]
   }
 ]
