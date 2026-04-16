@@ -10,10 +10,10 @@
   "IDCC": {
     "activated_date": "2025-09-23T16:44:32.429013",
     "activation_price": 346.38,
-    "highest_price": 416.71,
-    "current_stop_price": 383.3732,
+    "highest_price": 427.15,
+    "current_stop_price": 392.978,
     "active": true,
-    "last_updated": "2026-04-15T22:09:48.753883"
+    "last_updated": "2026-04-16T22:07:06.563058"
   },
   "EPAM": {
     "activated_date": "2025-12-03T21:38:54.220331",
