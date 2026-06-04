@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2026-06-04T22:52:43.773071",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "buy",
+        "symbol": "EPAM",
+        "qty": 128,
+        "order_id": "1e87b4e0-5e01-4bf7-9d4c-dc2d856ab34f"
+      }
+    ]
+  }
+]
