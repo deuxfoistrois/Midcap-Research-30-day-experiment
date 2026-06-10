@@ -34,5 +34,17 @@
         "order_id": "7563e977-7d9c-4f45-af1f-0767dddad6ff"
       }
     ]
+  },
+  {
+    "timestamp": "2026-06-10T23:07:51.016353",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "SNDX",
+        "qty": 1241,
+        "order_id": "8a107579-0892-46b5-99e9-cc0e8d736cb5"
+      }
+    ]
   }
 ]
