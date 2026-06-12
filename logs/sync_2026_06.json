@@ -58,5 +58,17 @@
         "order_id": "fe0d8f4a-b12e-4b82-a584-14db2cee5b4b"
       }
     ]
+  },
+  {
+    "timestamp": "2026-06-12T22:57:29.029372",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "IDCC",
+        "qty": 80,
+        "order_id": "65454ad9-9932-4e03-9692-1702b637fc90"
+      }
+    ]
   }
 ]
