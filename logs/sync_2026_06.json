@@ -112,5 +112,17 @@
         "order_id": "e631ca44-09a0-442c-8add-e16f03a98f32"
       }
     ]
+  },
+  {
+    "timestamp": "2026-06-18T23:18:08.813144",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "EPAM",
+        "qty": 515,
+        "order_id": "56a9ec4c-0a8b-4b8b-aeb6-ee52a176d856"
+      }
+    ]
   }
 ]
