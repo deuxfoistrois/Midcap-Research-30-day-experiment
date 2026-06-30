@@ -160,5 +160,23 @@
         "order_id": "e74de3e0-cabf-4e85-bbdc-df91784ad929"
       }
     ]
+  },
+  {
+    "timestamp": "2026-06-30T22:49:38.574586",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "SNDX",
+        "qty": 1011,
+        "order_id": "4d65dc7b-f7e9-4aec-a761-8285ef7461c1"
+      },
+      {
+        "side": "sell",
+        "symbol": "EPAM",
+        "qty": 290,
+        "order_id": "571371ff-8a0a-40c0-8401-a38948d56427"
+      }
+    ]
   }
 ]
