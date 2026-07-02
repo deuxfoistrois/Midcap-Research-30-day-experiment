@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2026-07-02T22:36:26.798807",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "EPAM",
+        "qty": 275,
+        "order_id": "deff2764-0cd9-4771-ad29-cf4a05ecc9bb"
+      },
+      {
+        "side": "sell",
+        "symbol": "IDCC",
+        "qty": 77,
+        "order_id": "355aaa62-9fcf-4d9a-80ed-18d923253c9a"
+      }
+    ]
+  }
+]
