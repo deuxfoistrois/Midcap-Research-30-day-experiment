@@ -52,5 +52,17 @@
         "order_id": "e6a70647-e785-4ac0-a598-a5ff38339a92"
       }
     ]
+  },
+  {
+    "timestamp": "2026-07-08T22:32:27.518558",
+    "type": "position_sync",
+    "orders": [
+      {
+        "side": "sell",
+        "symbol": "STRL",
+        "qty": 35,
+        "order_id": "19571d30-e5ef-4648-a669-cba824c7864d"
+      }
+    ]
   }
 ]
