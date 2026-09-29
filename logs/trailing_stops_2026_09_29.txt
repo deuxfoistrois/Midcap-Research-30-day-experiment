@@ -1,0 +1,36 @@
+=== Current Stop Loss Status ===
+Report generated: 2026-09-29 01:09:42
+
+SNDX:
+  Current Price: $21.38
+  Entry Price: $42.50
+  Current Gain: -49.69%
+  Status: Fixed Stop Loss
+  Stop Price: $39.10
+  Trailing Activates at: 5.0% gain
+
+EPAM:
+  Current Price: $120.25
+  Entry Price: $195.00
+  Current Gain: -38.33%
+  Status: Fixed Stop Loss
+  Stop Price: $179.40
+  Trailing Activates at: 5.0% gain
+
+STRL:
+  Current Price: $527.73
+  Entry Price: $320.00
+  Current Gain: 64.92%
+  Status: Fixed Stop Loss
+  Stop Price: $294.40
+  Trailing Activates at: 5.0% gain
+
+IDCC:
+  Current Price: $394.02
+  Entry Price: $135.00
+  Current Gain: 191.87%
+  Status: TRAILING STOP ACTIVE
+  Highest Price: $427.15
+  Current Stop: $392.98
+  Activated: 2025-09-23
+
